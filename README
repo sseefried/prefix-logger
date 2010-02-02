@@ -1,0 +1,20 @@
+To use it put "include Logging"  at the top of the class you want to add 
+logging to. This adds two new methods:
+
+log_info, log_error
+
+These log just like the logger.info and logger.error methods except
+that they prefix the output with "INFO: " and "ERROR: " respectively, 
+even if the output is multi-line. This means that you can do
+
+% tail -f log/development.log | grep 'INFO'
+
+or
+
+% tail -f log/development.log | grep 'ERROR'
+
+so that you *just* see the logging info in that window uncluttered by
+everything else.
+
+Another advantage of this plugin is that you can call the method from
+both instance and class methods.
