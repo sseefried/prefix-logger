@@ -1,10 +1,10 @@
-To use it put "include Logging"  at the top of the class you want to add 
+To use it put "include Logging"  at the top of the class you want to add
 logging to. This adds two new methods:
 
 log_info, log_error
 
 These log just like the logger.info and logger.error methods except
-that they prefix the output with "INFO: " and "ERROR: " respectively, 
+that they prefix the output with "INFO: " and "ERROR: " respectively,
 even if the output is multi-line. This means that you can do
 
 % tail -f log/development.log | grep 'INFO'

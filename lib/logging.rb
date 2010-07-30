@@ -1,8 +1,8 @@
-# 
+#
 # Author: Sean Seefried
 # Description: A mixin for improved logging
 # Date: 04 Mar 2009
-# 
+#
 
 # This module makes the methods +log_error+ and +log_info+ available as
 # instance methods *and* class methods.  It uses the clever idea of
@@ -25,7 +25,7 @@ module Logging
       str = o.is_a?(String) ? o : o.inspect
       @@logging_logger.error(logging_add_prefix(LOGGING_ERROR_PREFIX,str))
     end
-    
+
     def log_info(o)
       str = o.is_a?(String) ? o : o.inspect
       @@logging_logger.info(logging_add_prefix(LOGGING_INFO_PREFIX,str))
@@ -38,27 +38,27 @@ module Logging
     def error_prefix
       LOGGING_ERROR_PREFIX
     end
-    
+
     def info_prefix
       LOGGING_INFO_PREFIX
     end
-    
+
     def log_time(description)
       t0 = Time.zone.now
       log_info("#{description}")
       yield
       seconds = Time.zone.now - t0
-      if seconds < 1 
+      if seconds < 1
         log_info("[Time] #{description} took %dms" % (seconds * 1000.to_i))
       else
         args = [seconds, (seconds / 60).to_i, seconds.to_i % 60]
         log_info("[Time] #{description} took %.2fs = %d:%02d" % args)
       end
     end
-    
+
   end
 
   # include the methods as instance methods
-  include ClassMethods 
+  include ClassMethods
 
 end
