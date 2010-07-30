@@ -10,7 +10,6 @@
 # self.included
 
 module Logging
-  
   # include the methods as class methods
   def self.included(receiver)
     receiver.extend ClassMethods
@@ -20,13 +19,15 @@ module Logging
     LOGGING_ERROR_PREFIX = "ERROR: "
     LOGGING_INFO_PREFIX  = "INFO: "
 
-    @@logging_logger = Logger.new("#{RAILS_ROOT}/log/#{ENV['RAILS_ENV']}.log")
+    @@logging_logger = Logger.new("#{RAILS_ROOT}/log/#{RAILS_ENV}.log")
 
-    def log_error(str)
+    def log_error(o)
+      str = o.is_a?(String) ? o : o.inspect
       @@logging_logger.error(logging_add_prefix(LOGGING_ERROR_PREFIX,str))
     end
     
-    def log_info(str)
+    def log_info(o)
+      str = o.is_a?(String) ? o : o.inspect
       @@logging_logger.info(logging_add_prefix(LOGGING_INFO_PREFIX,str))
     end
 
@@ -40,6 +41,19 @@ module Logging
     
     def info_prefix
       LOGGING_INFO_PREFIX
+    end
+    
+    def log_time(description)
+      t0 = Time.zone.now
+      log_info("#{description}")
+      yield
+      seconds = Time.zone.now - t0
+      if seconds < 1 
+        log_info("[Time] #{description} took %dms" % (seconds * 1000.to_i))
+      else
+        args = [seconds, (seconds / 60).to_i, seconds.to_i % 60]
+        log_info("[Time] #{description} took %.2fs = %d:%02d" % args)
+      end
     end
     
   end
