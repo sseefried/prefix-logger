@@ -46,7 +46,7 @@ module Logging
     def log_time(description)
       t0 = Time.zone.now
       log_info("#{description}")
-      yield
+      result = yield
       seconds = Time.zone.now - t0
       if seconds < 1
         log_info("[Time] #{description} took %dms" % (seconds * 1000.to_i))
@@ -54,6 +54,7 @@ module Logging
         args = [seconds, (seconds / 60).to_i, seconds.to_i % 60]
         log_info("[Time] #{description} took %.2fs = %d:%02d" % args)
       end
+      result
     end
 
   end
